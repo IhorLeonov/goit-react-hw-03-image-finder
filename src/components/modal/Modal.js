@@ -1,5 +1,6 @@
 import { Overlay, ModalBox } from 'components/modal/Modal.styled';
 import { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { createPortal } from 'react-dom';
 const modalRoot = document.querySelector('#modal-root');
 
@@ -33,3 +34,7 @@ export class Modal extends Component {
     );
   }
 }
+
+Modal.propTypes = {
+  onClose: PropTypes.func,
+};

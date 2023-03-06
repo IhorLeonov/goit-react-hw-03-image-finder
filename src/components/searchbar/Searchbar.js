@@ -54,5 +54,5 @@ export const Searchbar = ({ onSubmitForm, resetPage }) => {
 
 Searchbar.propTypes = {
   onSubmitForm: PropTypes.func.isRequired,
-  // onChange: PropTypes.func.isRequired,
+  resetPage: PropTypes.number.isRequired,
 };
