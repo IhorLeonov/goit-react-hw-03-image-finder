@@ -1,5 +1,8 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import { GrFormSearch } from 'react-icons/gr';
+import { iconSize } from 'components/constants/IconSize';
 import {
   SearchbarHeader,
   SearchForm,
@@ -8,22 +11,36 @@ import {
   SearchFormInput,
 } from 'components/searchbar/Searchbar.styled';
 
-export const Searchbar = ({ onSubmit }) => {
+export const Searchbar = ({ onSubmitForm, resetPage }) => {
   return (
     <SearchbarHeader>
       <Formik
-        // initialValues={{}}
+        initialValues={{ searchQuary: '' }}
         onSubmit={(values, actions) => {
-          console.log('Form submit');
+          const { searchQuary } = values;
+          resetPage = 1;
+
+          if (searchQuary.trim() === '') {
+            toast.error('Enter search query!', {
+              position: 'top-left',
+              autoClose: 2000,
+            });
+            return;
+          }
+
+          onSubmitForm(searchQuary, resetPage);
+          // actions.setSubmitting(false);
           actions.resetForm();
         }}
       >
         <SearchForm>
           <SearchFormButton type="submit">
-            <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+            <GrFormSearch size={iconSize.m}></GrFormSearch>
+            <SearchFormButtonLabel></SearchFormButtonLabel>
           </SearchFormButton>
 
           <SearchFormInput
+            name="searchQuary"
             type="text"
             autoComplete="off"
             autoFocus
@@ -36,23 +53,6 @@ export const Searchbar = ({ onSubmit }) => {
 };
 
 Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmitForm: PropTypes.func.isRequired,
+  // onChange: PropTypes.func.isRequired,
 };
-
-// {
-//   /* <header class="searchbar">
-//   <form class="form">
-//     <button type="submit" class="button">
-//       <span class="button-label">Search</span>
-//     </button>
-
-//     <input
-//       class="input"
-//       type="text"
-//       autocomplete="off"
-//       autofocus
-//       placeholder="Search images and photos"
-//     />
-//   </form>
-// </header>; */
-// }
