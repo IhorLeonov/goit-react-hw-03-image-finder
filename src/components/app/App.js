@@ -28,10 +28,10 @@ export class App extends Component {
           quary: newQuary,
           page: newPage,
           data: [],
-          // status: 'pending',
+          status: 'pending',
         });
       }
-      this.setState({ status: 'pending' }); // если закоментить то наверх не скачет
+      this.setState({ status: 'pending' }); // <<---- если закоментить, то догружает нормально, но лоадер не работает
       const newData = await API.getRequest(newQuary, newPage);
 
       if (!newData.totalHits) {
@@ -72,12 +72,14 @@ export class App extends Component {
             error={error}
           />
           {status === 'pending' && <Loader width={96} />}
-          {data.length > 0 && totalHits > data.length && (
-            <Button
-              status={status}
-              onClick={() => this.fetchImages(quary, page)}
-            />
-          )}
+          {data.length > 0 &&
+            totalHits > data.length &&
+            status === 'resolved' && (
+              <Button
+                status={status}
+                onClick={() => this.fetchImages(quary, page)}
+              />
+            )}
         </ImageFinder>
         <GlobalStyle />
         <ToastContainer />
