@@ -4,8 +4,6 @@ import { ImageGalleryItem } from 'components/imageGalleryItem/ImageGalleryItem';
 import { Component } from 'react';
 
 export class ImageGallery extends Component {
-  state = {};
-
   render() {
     const { data, quary, status } = this.props;
 

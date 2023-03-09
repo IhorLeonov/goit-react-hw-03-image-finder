@@ -14,6 +14,5 @@ export const Overlay = styled.div`
 `;
 
 export const ModalBox = styled.div`
-  max-width: calc(70vw - 48px);
-  max-height: calc(70vh - 24px);
+  max-width: 60%;
 `;

@@ -1,9 +1,10 @@
 import { LoaderBox } from 'components/loader/Loader.styled';
 import { RotatingLines } from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 
-export const Loader = () => {
+export const Loader = ({ page }) => {
   return (
-    <LoaderBox>
+    <LoaderBox page={page}>
       <RotatingLines
         strokeColor="grey"
         strokeWidth="5"
@@ -13,4 +14,8 @@ export const Loader = () => {
       />
     </LoaderBox>
   );
+};
+
+Loader.propTypes = {
+  page: PropTypes.number.isRequired,
 };

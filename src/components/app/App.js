@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { GlobalStyle } from 'components/constants/GlobalStyle';
-import { Layout } from 'components/layout/Layout';
 import { Searchbar } from 'components/searchbar/Searchbar';
 import { ImageGallery } from 'components/imageGallery/ImageGallery';
 import { Button } from 'components/button/Button';
@@ -18,10 +17,18 @@ export class App extends Component {
     error: null,
     page: 1,
     totalHits: 0,
+    showLoader: false,
   };
+
   fetchImages = async (newQuary, newPage) => {
     try {
       const { quary } = this.state;
+
+      if (newPage === 1 && quary === newQuary) {
+        return;
+      }
+
+      this.setState({ showLoader: true });
 
       if (quary !== newQuary) {
         this.setState({
@@ -31,8 +38,9 @@ export class App extends Component {
           status: 'pending',
         });
       }
-      this.setState({ status: 'pending' }); // <<---- если закоментить, то догружает нормально, но лоадер не работает
+
       const newData = await API.getRequest(newQuary, newPage);
+      this.setState({ showLoader: false });
 
       if (!newData.totalHits) {
         return this.setState({ status: 'empty' });
@@ -55,35 +63,30 @@ export class App extends Component {
   };
 
   render() {
-    const { data, status, quary, error, totalHits, page } = this.state;
+    const { data, status, quary, error, totalHits, page, showLoader } =
+      this.state;
 
     return (
-      <Layout>
-        <ImageFinder>
-          <Searchbar
-            onChange={this.handleInputChange}
-            onSubmitForm={this.fetchImages}
-            resetPage={page}
-          ></Searchbar>
-          <ImageGallery
-            data={data}
-            status={status}
-            quary={quary}
-            error={error}
-          />
-          {status === 'pending' && <Loader width={96} />}
-          {data.length > 0 &&
-            totalHits > data.length &&
-            status === 'resolved' && (
-              <Button
-                status={status}
-                onClick={() => this.fetchImages(quary, page)}
-              />
-            )}
-        </ImageFinder>
+      <ImageFinder>
+        <Searchbar
+          onChange={this.handleInputChange}
+          onSubmitForm={this.fetchImages}
+          resetPage={page}
+        ></Searchbar>
+        <ImageGallery data={data} status={status} quary={quary} error={error} />
+        {data.length > 0 &&
+          totalHits > data.length &&
+          status === 'resolved' &&
+          !this.state.showLoader && (
+            <Button
+              status={status}
+              onClick={() => this.fetchImages(quary, page)}
+            />
+          )}
+        {showLoader && <Loader page={page} width={96} />}
         <GlobalStyle />
         <ToastContainer />
-      </Layout>
+      </ImageFinder>
     );
   }
 }

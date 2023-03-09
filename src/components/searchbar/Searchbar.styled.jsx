@@ -23,7 +23,7 @@ export const SearchbarHeader = styled.header`
 export const SearchForm = styled(FormikForm)`
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 300px;
   max-width: 600px;
   background-color: #fff;
   border-radius: 3px;
@@ -37,7 +37,6 @@ export const SearchFormButton = styled.button`
   width: 48px;
   height: 48px;
   border: 0;
-  /* background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg'); */
   background-size: 40%;
   background-repeat: no-repeat;
   background-position: center;
